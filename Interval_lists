@@ -1,5 +1,5 @@
 # Preparation of interval list file for GATK WES analysis
-# Picard tools require intevral_list insead of Bed files to annotate coordinates of genomic regions.
+# Picard tools require intevral_list instead of Bed files to annotate coordinates of genomic regions.
 # In these analysis are two Bed files converted to interval_lists and then combined. The aim is to combine two original interval_lists and keep only genomic regions which are present in both original interval_lists.
 
 # Tried to run BedToIntervalList but got error message
