@@ -23,11 +23,9 @@ java -jar picard.jar BedToIntervalList \
       SD=/dir/reference_hg19/Homo_sapiens_assembly19.fasta
 
 
-# Combine the intervals from two interval lists, sorting the resulting in list and merging overlapping and abutting intervals (GATK tool)
+# Combine the intervals from two interval lists, sorting the resulting in list and merging overlapping intervals (GATK tool)
 java -jar picard.jar IntervalListTools \
-       ACTION=CONCAT \
-       SORT=true \
-       UNIQUE=true \
+       ACTION=OVERLAPS \
        I=dir/twist_exome_v3.bed \
-       I=dir/IDT.interval_list \
+       SI=dir/IDT.interval_list \
        O=dir/combined.interval_list 
