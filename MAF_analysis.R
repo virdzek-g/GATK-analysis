@@ -15,7 +15,7 @@ for (i in list_files) {
   maf_data <- read.maf(file_data)
   
   # create object name based on filename
-  dataframe_name <- sub("\\-.*", "", i)
+  dataframe_name <- sub("\\-.*", "", i) # example name of an original file is PAZ***-**-filtered.annotated.maf
   
   # name the object
   assign(dataframe_name, maf_data)
