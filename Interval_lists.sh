@@ -20,7 +20,7 @@ reuse Java-1.8
 
 java -jar picard.jar BedToIntervalList \
       I=/dir/twist_exome_v3.bed \
-      O=/dir/twist_exome.interval_list/
+      O=/dir/twist_exome.interval_list \
       SD=/dir/reference_hg19/Homo_sapiens_assembly19.fasta
 
 
@@ -44,5 +44,5 @@ tabix xyz.vcf.gz
 # then
 java -jar picard.jar VcfToIntervalList \
       I=/dir/xyz.vcf.gz \
-      O=/dir/xyz.interval_list/
+      O=/dir/xyz.interval_list
 
