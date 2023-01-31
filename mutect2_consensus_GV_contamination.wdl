@@ -348,6 +348,7 @@ workflow Mutect2 {
             unfiltered_vcf = MergeVCFs.merged_vcf,
             unfiltered_vcf_idx = MergeVCFs.merged_vcf_idx,
             output_name = filtered_name,
+            contamination_estimate = contamination_estimate,
             compress = compress,
             mutect_stats = MergeStats.merged_stats,
             contamination_table = CalculateContamination.contamination_table,
