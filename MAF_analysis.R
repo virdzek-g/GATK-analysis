@@ -1,38 +1,25 @@
 ### Procssing MAF files after Mutect2 analysis
-### https://www.bioconductor.org/packages/devel/bioc/vignettes/maftools/inst/doc/maftools.html
 
-### Process Mutation Annotation Format (MAF) files for individual patients and merge them into MAF object for analysis using MAF tools
+## loop across all MAF files to create a list of all variants in a cohort
 
-setwd("")
 
-# Loop multiple files and assign name
-list_files <- dir()
+list_files <- dir() 
+data = data.frame()
 for (i in list_files) {
-  
-  # read the data
-  file <- read.maf(i)
-  file_data <- file@data
-  maf_data <- read.maf(file_data)
-  
-  # create object name based on filename
-  dataframe_name <- sub("\\-.*", "", i) # example name of an original file is PAZ***-**-filtered.annotated.maf
-  
-  # name the object
-  assign(dataframe_name, maf_data)
+  tryCatch({
+    # read the data
+    file <- read.maf(i,vc_nonSyn=c('Frame_Shift_Ins','INS','DEL','Missense_Mutation','Nonsense_Mutation','Frame_Shift_Del','In_Frame_Ins','In_Frame_Del','Splice_Site',"3'UTR",'IGR',"5'UTR", 'DE_NOVO_START_IN_FRAME', 'Intron','Silent')) #,"3'UTR",'IGR',"5'UTR"
+    file_data <- file@data
+    maf_data <- read.maf(file_data,vc_nonSyn=c('Frame_Shift_Ins','INS','DEL','Missense_Mutation','Nonsense_Mutation','Frame_Shift_Del','In_Frame_Ins','In_Frame_Del','Splice_Site',"3'UTR",'IGR',"5'UTR", 'DE_NOVO_START_IN_FRAME', 'Intron','Silent')) #,"3'UTR",'IGR',"5'UTR"
+
+    # create object name based on filename
+    dataframe_name <- sub(".maf", "", i) #"\\-.*", "", i
+
+    # name the object
+    assign(dataframe_name, maf_data)
+    maf_data <- maf_data@data[,c(1,5,6,7,9:13,16,37:42,80,81,82,141)] 
+    data <- rbind(data,maf_data)
+  }, error = function(e) {
+    print(paste(i, "could not be read"))
+  })
 }
-
-# create mergerd MAF object
-list <- mget(ls(pattern="PAZ")) # PAZ is a shared pattern across names of all samples
-maf <- merge_mafs(list)
-
-# Analyse merged MAF object using MAFtools
-library(maftools)
-plotmafSummary(maf = maf, rmOutlier = TRUE, addStat = 'median', dashboard = TRUE, titvRaw = FALSE)
-
-oncoplot(maf = maf, top = 30, barcode_mar=8, gene_mar=7)
-
-somaticInteractions(maf = maf, top = 25, pvalue = c(0.05, 0.1))
-
-maf.titv = titv(maf = maf, plot = FALSE, useSyn = TRUE)
-#plot titv summary
-plotTiTv(res = maf.titv)
