@@ -1,4 +1,4 @@
 # GATK-analysis
 
-## size_slelction.WDL
+## size_selection.WDL
 To selection only fragments between 90-150bp long from BAM file
